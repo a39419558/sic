@@ -1,0 +1,45 @@
+5         000000    COPY      START               000000    
+10        000101    FIRST     STL       RETADR    014134    
+15        000104    CLOOP     JSUB      RDREC     48113A    
+20        000107              LDA       LENGTH    000137    
+25        00010A              COMP      ZERO      028131    
+30        00010D              JEQ       ENDFIL    030116    
+35        000110              JSUB      WRREC     481162    
+40        000113              J         CLOOP     03C104    
+45        000116    ENDFIL    LDA       EOF       00012B    
+50        000119              STA       BUFFER    00C13A    
+55        00011C              LDA       THREE     00012E    
+60        00011F              STA       LENGTH    00C137    
+65        000122              JSUB      WRREC     481162    
+70        000125              LDL       RETADR    008134    
+75        000128              RSUB                4C0000    
+80        00012B    EOF       BYTE      C'EOF'    454F46    
+85        00012E    THREE     WORD      458425    06FEB9    
+90        000131    ZERO      WORD      -20       FFFFEC    
+95        000134    RETADR    RESW      1         000000    
+100       000137    LENGTH    RESW      1         000000    
+105       00013A    BUFFER    RESB      4096      000000    
+110       00113A    RDREC     LDX       ZERO      004131    
+115       00113D              LDA       ZERO      000131    
+120       001140    RLOOP     TD        INPUT     E0115E    
+125       001143              JEQ       RLOOP     301140    
+130       001146              RD        INPUT     C8115E    
+135       001149              COMP      ZERO      028131    
+140       00114C              JEQ       EXIT      301158    
+145       00114F              STCH      BUFFER,X  548000    
+150       001152              TIX       MAXLEN    2C115F    
+155       001155              JLT       RLOOP     381140    
+160       001158    EXIT      STX       LENGTH    010137    
+165       00115B              RSUB                4C0000    
+170       00115E    INPUT     BYTE      X'F1'     0000F1    
+175       00115F    MAXLEN    WORD      4096      001000    
+180       001162    WRREC     LDX       ZERO      004131    
+185       001165    WLOOP     TD        OUTPUT    E0117A    
+190       001168              JEQ       WLOOP     301165    
+195       00116B              LDCH      BUFFER,X  508000    
+200       00116E              WD        OUTPUT    DC117A    
+205       001171              TIX       LENGTH    02C137    
+210       001174              JLT       WLOOP     381165    
+215       001177              RSUB                4C0000    
+220       00117A    OUTPUT    BYTE      X'05'     000005    
+225       00117B              END       FIRST     000000    
